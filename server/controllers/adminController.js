@@ -25,7 +25,9 @@ const logout = async (req, res) => {
 const adminDashboard = async (req, res) => {
   try {
     const usersData = await User.find({ is_admin: 0 });
-    res.render("admin/dashboard", { users: usersData });
+    const pendingRecipes = await Recipe.find({ approvalStatus: "pending" });
+
+    res.render("admin/dashboard", { users: usersData, recipes: pendingRecipes });
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }

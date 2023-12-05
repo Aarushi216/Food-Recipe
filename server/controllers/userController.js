@@ -44,7 +44,7 @@ const sendVerifyMail = async (name, email, user_id) => {
 };
 const loadRegister = async (req, res) => {
   try {
-    res.render("users/register");
+    res.render("users/register", { layout: 'layout/layout-no-header' });
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
@@ -95,14 +95,16 @@ const renderContactUs = async (req, res) => {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
 //Login User staretd
 const loginLoad = async (req, res) => {
   try {
-    res.render("users/login");
+    res.render("users/login", { layout: 'layout/layout-no-header' });
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
 const verifyLogin = async (req, res) => {
   try {
     const email = req.body.email;

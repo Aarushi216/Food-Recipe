@@ -31,6 +31,11 @@ const recipeSchema = new mongoose.Schema({
 
     required: "This field is required.",
   },
+  approvalStatus: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
 });
 
 recipeSchema.index({ name: "text", description: "text" });

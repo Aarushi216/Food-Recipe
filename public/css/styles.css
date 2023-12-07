@@ -10,10 +10,9 @@
 max-width: 1530px;
 }
 
-body{
+.custom-background {
     background-image: url("/img/Ilikefood.jpg");
     background-color: rgb(243,243,243);
-
 }
 
 a{

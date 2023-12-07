@@ -1,8 +1,9 @@
 // Import the required modules
 const express = require("express");
+const session = require("express-session");
 const expressLayouts = require("express-ejs-layouts");
 // const fileUpload = require('express-fileupload');
-const session = require("express-session");
+
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const bodyParser = require("body-parser");
@@ -37,6 +38,7 @@ app.set("layout", "layout/main"); // Set the layout file (without the .ejs exten
 app.set("view engine", "ejs"); // Set EJS as the view engine
 // Set the views directory to './views'
 app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join('userdashboard', "views"));
 
 app.use("/", routes);
 app.use("/", userRoutes);
@@ -50,6 +52,8 @@ app.get("/", (req, res) => {
 app.get("/", (req, res) => {
   res.render("users/register", { title: "Nepali Cuisine" });
 });
+// Assuming you have a route like this in your app
+
 
 app.listen(port, () =>
   console.log(`Server is running at http://localhost:${port}/register`)

@@ -3,13 +3,13 @@
 <h1>Admin Dashboard</h1>
 
 <h2>Users</h2>
-<table width="50%">
+<table width="50%" class="table table-sm table-boardered table-hover ">
   <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Mobile</th>
-    <th>Image</th>
-    <th>Verified</th>
+    <th class="table-dark" >Name</th>
+    <th class="table-dark">Email</th>
+    <th class="table-dark">Mobile</th>
+    <th class="table-dark">Image</th>
+    <th class="table-dark">Verified</th>
   </tr>
   <% if(users.length > 0){ for(let i=0; i<users.length;i++){ %>
   <tr>
@@ -33,13 +33,13 @@
 </table>
 
 <h2>Pending Recipes</h2>
-<table width="50%">
+<table width="50%" class="table table-sm table-boarder table-hover">
   <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Ingredients</th>
-    <th>Image</th>
-    <th>Actions</th>
+    <th class="table-dark">Name</th>
+    <th class="table-dark">Description</th>
+    <th class="table-dark">Ingredients</th>
+    <th class="table-dark">Image</th>
+    <th class="table-dark">Actions</th>
   </tr>
   <% if(recipes.length > 0){ for(let i=0; i<recipes.length;i++){ %>
   <tr>
@@ -49,10 +49,10 @@
     <td><img src="/public/img/<%= recipes[i].image %>" width="100px" height="100px" alt="<%= recipes[i].image %>"></td>
     <td>
       <form action="/admin/approve-recipe/<%= recipes[i]._id %>" method="POST">
-        <button type="submit">Approve</button>
+        <button type="submit" class="btn btn-success">Approve</button>
       </form>
       <form action="/admin/reject-recipe/<%= recipes[i]._id %>" method="POST">
-        <button type="submit">Reject</button>
+        <button type="submit" class="btn btn-danger">Reject</button>
       </form>
     </td>
   </tr>

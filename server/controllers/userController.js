@@ -1,5 +1,8 @@
 require("../models/database");
+const express = require("express");
+const session = require("express-session");
 const User = require("../models/User");
+const Recipe = require("../models/Recipe");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 
@@ -99,11 +102,13 @@ const renderContactUs = async (req, res) => {
 //Login User staretd
 const loginLoad = async (req, res) => {
   try {
-    res.render("users/login", { layout: 'layout/layout-no-header' });
+    
+    res.render("userdashboard", { layout: 'layout/layout-no-header' });
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
 
 const verifyLogin = async (req, res) => {
   try {
@@ -121,6 +126,7 @@ const verifyLogin = async (req, res) => {
             return res.redirect("/admin/dashboard");
           }
           req.session.user_id = userData._id;
+          
           res.redirect("/");
         }
       } else {
@@ -136,11 +142,14 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-    res.render("index");
+    console.log(req.session.user_id); // Add this line
+    const userData =await User.findById({_id:req.session.user_id});
+    res.render('users/userdasboard',{users:userData});
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
 const userLogout = async (req, res) => {
   try {
     req.session.destroy();
@@ -149,6 +158,9 @@ const userLogout = async (req, res) => {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
+
+
 
 module.exports = {
   loadRegister,
@@ -159,4 +171,6 @@ module.exports = {
   verifyLogin,
   loadHome,
   userLogout,
+  
+ 
 };

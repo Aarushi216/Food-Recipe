@@ -23,12 +23,15 @@ router.get("/verify", userController.verifyMail);
 router.get("/", auth.isLogout, userController.loginLoad);
 router.get("/login", auth.isLogout, userController.loginLoad);
 
+
 router.post("/login", userController.verifyLogin);
 router.get("/contact", userController.renderContactUs);
 
-router.post("/main", auth.isLogout, (req, res) => {
+
+router.get("/userdashboard", auth.isLogout, (req, res) => {
   userController.loadHome(req, res);
 });
+
 
 // routes/userRoutes.js
 router.get("/logout", (req, res) => {

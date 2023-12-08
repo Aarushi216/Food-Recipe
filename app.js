@@ -38,7 +38,7 @@ app.set("layout", "layout/main"); // Set the layout file (without the .ejs exten
 app.set("view engine", "ejs"); // Set EJS as the view engine
 // Set the views directory to './views'
 app.set("views", path.join(__dirname, "views"));
-app.set("views", path.join('userdashboard', "views"));
+
 
 app.use("/", routes);
 app.use("/", userRoutes);

@@ -28,9 +28,11 @@ router.post("/login", userController.verifyLogin);
 router.get("/contact", userController.renderContactUs);
 
 
-router.get("/userdashboard", auth.isLogout, (req, res) => {
+router.post("/main", auth.isLogout, (req, res) => {
   userController.loadHome(req, res);
 });
+
+router.get('/userdashboard',auth.isLogin, userController.userDashboard);
 
 
 // routes/userRoutes.js

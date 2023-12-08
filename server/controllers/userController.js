@@ -142,9 +142,7 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-    console.log(req.session.user_id); // Add this line
-    const userData =await User.findById({_id:req.session.user_id});
-    res.render('users/userdasboard',{users:userData});
+    res.render("index");
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
@@ -159,7 +157,15 @@ const userLogout = async (req, res) => {
   }
 };
 
-
+const userDashboard = async (req, res) => {
+  try {
+    console.log(req.session.user_id); // Add this line
+    const userData =await User.findById({_id:req.session.user_id});
+    res.render('users/userdasboard',{users:userData});
+  } catch (error) {
+    res.status(500).send({ message: error.message || "Error Occured" });
+  }
+};
 
 
 module.exports = {
@@ -171,6 +177,6 @@ module.exports = {
   verifyLogin,
   loadHome,
   userLogout,
-  
+  userDashboard
  
 };

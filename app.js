@@ -16,6 +16,7 @@ const adminRoutes = require("./server/routes/adminRoutes.js");
 const routes = require("./server/routes/recipeRoutes.js");
 const { register } = require("module");
 require("dotenv").config();
+const aboutRoutes = require('./server/routes/aboutRoutes.js');
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,11 +39,13 @@ app.set("layout", "layout/main"); // Set the layout file (without the .ejs exten
 app.set("view engine", "ejs"); // Set EJS as the view engine
 // Set the views directory to './views'
 app.set("views", path.join(__dirname, "views"));
+// app.set('views','./views/users')
 
 
 app.use("/", routes);
 app.use("/", userRoutes);
 app.use("/admin", adminRoutes);
+app.use('/about', aboutRoutes);
 
 // This route handler is for rendering the 'admin/index.ejs' view
 app.get("/", (req, res) => {

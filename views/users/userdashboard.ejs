@@ -1,18 +1,54 @@
-<h1> Welcome, <%= user.name %></h1>
+<!-- views/users/userDashboard.ejs -->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <!-- Add your stylesheets, scripts, or other dependencies here -->
+</head>
+<body>
+  <h1>Welcome, <%= user.name %></h1>
 
-<table style="width:50%;">
-  <tr>
-    <td>
-      <img src="/uploads/<%= users.image %>" width="100px" height="100px" alt="<%= user.image %>">
-    </td>
-  </tr>
-  <tr>
-    <td>Email</td>
-    <td><% user.email %></td>
-  </tr>
-  <tr>
-    <td>Mobile Number</td>
-    <td><% user.mobile %></td>
-  </tr>
-</table>
+  <table style="width:50%;">
+    <tr>
+      <td>
+        <img src="/uploads/<%= user.image %>" width="100px" height="100px" alt="<%= user.image %>">
+      </td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><%= user.email %></td>
+    </tr>
+    <tr>
+      <td>Mobile</td>
+      <td><%= user.mobile %></td>
+    </tr>
+    <tr>
+      <td>Verified</td>
+      <td>yes</td>
+    </tr>
+    <!-- Add more details as needed -->
+  </table>
+  <hr>
+  <br>
+  <!-- Display recipes if approved -->
+  <% if (recipes.length > 0) { %>
+    <h2>Your Approved Recipes</h2>
+    <ul>
+      <% recipes.forEach(recipe => { %>
+        <!-- Render each approved recipe as needed -->
+        <li><%= recipe.name %></li>
+        <!-- Add more details as needed -->
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No approved or rejected recipes available.</p>
+  <% } %>
+
+  <!-- Add other content or sections as needed -->
+
+  <!-- Add your scripts or other dependencies here -->
+</body>
+</html>

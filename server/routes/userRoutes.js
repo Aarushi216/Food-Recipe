@@ -5,6 +5,7 @@ const session = require("express-session");
 const auth = require("../middleware/auth");
 const multer = require("multer");
 const path = require("path");
+router.use(express.static('public'));
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/uploads/");
@@ -32,7 +33,9 @@ router.post("/main", auth.isLogout, (req, res) => {
   userController.loadHome(req, res);
 });
 
-router.get('/userdashboard',auth.isLogin, userController.userDashboard);
+router.get('/userDashboard', auth.isLogin, userController.loadUserDashboard);
+
+
 
 
 // routes/userRoutes.js

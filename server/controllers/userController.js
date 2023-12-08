@@ -103,7 +103,7 @@ const renderContactUs = async (req, res) => {
 const loginLoad = async (req, res) => {
   try {
     
-    res.render("userdashboard", { layout: 'layout/layout-no-header' });
+    res.render("users/login", { layout: 'layout/layout-no-header' });
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
@@ -157,13 +157,25 @@ const userLogout = async (req, res) => {
   }
 };
 
-const userDashboard = async (req, res) => {
+const loadUserDashboard = async (req, res) => {
   try {
-    console.log(req.session.user_id); // Add this line
-    const userData =await User.findById({_id:req.session.user_id});
-    res.render('users/userdasboard',{users:userData});
+    const userId = req.session.user_id;
+
+    if (!userId) {
+      return res.status(401).send({ message: 'User not authenticated' });
+    }
+
+    const user = await User.findById(userId);
+    const approvalRecipes = await Recipe.find({ approvalStatus: 'approved' });
+   
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    res.render('users/userdashboard', { user, recipes: approvalRecipes });
   } catch (error) {
-    res.status(500).send({ message: error.message || "Error Occured" });
+    console.error('Error loading user dashboard:', error);
+    res.status(500).send({ message: 'Error occurred while loading user dashboard' });
   }
 };
 
@@ -177,6 +189,6 @@ module.exports = {
   verifyLogin,
   loadHome,
   userLogout,
-  userDashboard
+  loadUserDashboard
  
 };

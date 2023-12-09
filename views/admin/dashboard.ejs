@@ -46,7 +46,8 @@
     <td><%= recipes[i].name %></td>
     <td><%= recipes[i].description %></td>
     <td><%= recipes[i].ingredients %></td>
-    <td><img src="/public/img/<%= recipes[i].image %>" width="100px" height="100px" alt="<%= recipes[i].image %>"></td>
+    <td><img src="/uploads/<%= recipes[i].image %>" width="100px" height="100px" alt="<%= recipes[i].image %>"></td>
+
     <td>
       <form action="/admin/approve-recipe/<%= recipes[i]._id %>" method="POST">
         <button type="submit" class="btn btn-success">Approve</button>

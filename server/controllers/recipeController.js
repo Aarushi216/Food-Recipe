@@ -107,8 +107,8 @@ exports.searchRecipe = async (req, res) => {
 exports.exploreLatest = async (req, res) => {
   try {
     const limitNumber = 30;
-    const recipe = await Recipe.find({}).sort({ _id: -1 }).limit(limitNumber);
-
+    const recipe = await Recipe.find({ approvalStatus: "approved",}).sort({ _id: -1 }).limit(limitNumber);
+    const isLoggedIn = req.session.user ? true : false;
     res.render("explore-latest", {
       title: "Nepali cusine - Explore Latest",
       recipe,

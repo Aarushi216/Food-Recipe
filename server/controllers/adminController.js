@@ -37,13 +37,34 @@ const approveRecipe = async (req, res) => {
 
   try {
     const recipe = await Recipe.findById(recipeId);
-    recipe.approvalStatus = "approved";
-    await recipe.save();
 
-    // Redirect back to the recipe list or a specific page
-    res.redirect("/views/recipe.ejs");
+    // Check if the recipe is found
+    if (!recipe) {
+      req.flash('error', 'Recipe not found.');
+      return res.redirect("/admin/dashboard");
+    }
+
+    // Check if the recipe is not already approved
+    if (recipe.approvalStatus !== "approved") {
+      // Set the approvalStatus to "approved"
+      recipe.approvalStatus = "approved";
+
+      // Save the updated recipe
+      await recipe.save();
+
+      // Redirect back to the admin dashboard with a success message
+      req.flash('success', 'Recipe approved successfully.');
+      return res.redirect("/admin/dashboard");
+    }
+
+    // If already approved, show a message
+    req.flash('info', 'Recipe is already approved.');
+    res.redirect("/admin/dashboard");
+
   } catch (error) {
-    res.status(500).send({ message: error.message || "Error Occurred" });
+    console.error('Error approving recipe:', error);
+    req.flash('error', 'An error occurred while approving the recipe.');
+    res.redirect("/admin/dashboard");
   }
 };
 
@@ -52,15 +73,39 @@ const rejectRecipe = async (req, res) => {
 
   try {
     const recipe = await Recipe.findById(recipeId);
-    recipe.approvalStatus = "rejected";
-    await recipe.save();
 
-    // Redirect back to the recipe list or a specific page
-    res.redirect("/views/recipe.ejs");
+    // Check if the recipe is found
+    if (!recipe) {
+      req.flash('error', 'Recipe not found.');
+      return res.redirect("/admin/dashboard");
+    }
+
+    // Check if the recipe is not already rejected
+    if (recipe.approvalStatus !== "rejected") {
+      // Set the approvalStatus to "rejected"
+      recipe.approvalStatus = "rejected";
+
+      // Save the updated recipe
+      await recipe.save();
+
+      // Redirect back to the admin dashboard with a success message
+      req.flash('success', 'Recipe rejected successfully.');
+      return res.redirect("/admin/dashboard");
+    }
+
+    // If already rejected, show a message
+    req.flash('info', 'Recipe is already rejected.');
+    res.redirect("/admin/dashboard");
+
   } catch (error) {
-    res.status(500).send({ message: error.message || "Error Occurred" });
+    console.error('Error rejecting recipe:', error);
+    req.flash('error', 'An error occurred while rejecting the recipe.');
+    res.redirect("/admin/dashboard");
   }
 };
+
+
+
 
 module.exports = {
   loadDashboard,

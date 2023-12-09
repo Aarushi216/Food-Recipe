@@ -33,8 +33,11 @@ const recipeSchema = new mongoose.Schema({
   },
   approvalStatus: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
-    default: "pending",
+   default: "pending",
+  },
+  author: {
+    type: Boolean,
+    default: false,
   },
 });
 

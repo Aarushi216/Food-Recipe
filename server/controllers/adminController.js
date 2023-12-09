@@ -32,20 +32,30 @@ const adminDashboard = async (req, res) => {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
 const approveRecipe = async (req, res) => {
+  console.log("ok")
   const { recipeId } = req.params;
 
   try {
     const recipe = await Recipe.findById(recipeId);
+    
+    if (!recipe) {
+      return res.status(404).send({ message: "Recipe not found" });
+    }
+
     recipe.approvalStatus = "approved";
     await recipe.save();
 
-    // Redirect back to the recipe list or a specific page
-    res.redirect("/views/recipe.ejs");
+    // Redirect or send a response
+    res.redirect(`/admin/dashboard`);
   } catch (error) {
+    console.error(error); // For debugging
     res.status(500).send({ message: error.message || "Error Occurred" });
   }
 };
+
+
 
 const rejectRecipe = async (req, res) => {
   const { recipeId } = req.params;
@@ -56,7 +66,7 @@ const rejectRecipe = async (req, res) => {
     await recipe.save();
 
     // Redirect back to the recipe list or a specific page
-    res.redirect("/views/recipe.ejs");
+    res.redirect(`/admin/dashboard`);
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occurred" });
   }

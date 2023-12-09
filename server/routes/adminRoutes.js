@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 router.get("/home", auth.isLogin, adminController.loadDashboard);
 router.get("/dashboard", adminController.adminDashboard);
 
-router.post("/admin/approve-recipe/:recipeId", adminController.approveRecipe);
-router.post("/admin/reject-recipe/:recipeId", adminController.rejectRecipe)
+router.post("/approve-recipe/:recipeId", adminController.approveRecipe);
+router.post("/reject-recipe/:recipeId", adminController.rejectRecipe)
 
 module.exports = router;

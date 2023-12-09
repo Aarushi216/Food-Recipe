@@ -32,7 +32,9 @@ const adminDashboard = async (req, res) => {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
 const approveRecipe = async (req, res) => {
+  console.log("ok")
   const { recipeId } = req.params;
 
   try {
@@ -47,26 +49,24 @@ const approveRecipe = async (req, res) => {
     // Check if the recipe is not already approved
     if (recipe.approvalStatus !== "approved") {
       // Set the approvalStatus to "approved"
-      recipe.approvalStatus = "approved";
+      
+    if (!recipe) {
+      return res.status(404).send({ message: "Recipe not found" });
+    }
+
+    recipe.approvalStatus = "approved";
 
       // Save the updated recipe
       await recipe.save();
 
-      // Redirect back to the admin dashboard with a success message
-      req.flash('success', 'Recipe approved successfully.');
-      return res.redirect("/admin/dashboard");
-    }
-
-    // If already approved, show a message
-    req.flash('info', 'Recipe is already approved.');
-    res.redirect("/admin/dashboard");
-
+    // Redirect back to the recipe list or a specific page
+    res.redirect("/views/recipe.ejs");
   } catch (error) {
-    console.error('Error approving recipe:', error);
-    req.flash('error', 'An error occurred while approving the recipe.');
-    res.redirect("/admin/dashboard");
+    res.status(500).send({ message: error.message || "Error Occurred" });
   }
 };
+
+
 
 const rejectRecipe = async (req, res) => {
   const { recipeId } = req.params;
@@ -88,15 +88,8 @@ const rejectRecipe = async (req, res) => {
       // Save the updated recipe
       await recipe.save();
 
-      // Redirect back to the admin dashboard with a success message
-      req.flash('success', 'Recipe rejected successfully.');
-      return res.redirect("/admin/dashboard");
-    }
-
-    // If already rejected, show a message
-    req.flash('info', 'Recipe is already rejected.');
-    res.redirect("/admin/dashboard");
-
+    // Redirect back to the recipe list or a specific page
+    res.redirect("/views/recipe.ejs");
   } catch (error) {
     console.error('Error rejecting recipe:', error);
     req.flash('error', 'An error occurred while rejecting the recipe.');

@@ -34,14 +34,18 @@ router.post("/main", auth.isLogout, (req, res) => {
 });
 
 router.get('/userDashboard', auth.isLogin, userController.loadUserDashboard);
-
-
-
-
 // routes/userRoutes.js
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/login");
 });
 
+router.get("/forget",auth.isLogout,userController.forgetLoad);
+router.post("/forget",userController.forgetVerify);
+
+router.get("/forget-password",auth.isLogout,userController.forgetPasswordLoad);
+router.post("/forget-password",userController.resetPassword);
+
+router.get("/edit",auth.isLogin,userController.editLoad);
+router.post("/edit",upload.single('image'),userController.updateProfile);
 module.exports = router;

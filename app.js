@@ -2,7 +2,7 @@
 const express = require("express");
 const session = require("express-session");
 const expressLayouts = require("express-ejs-layouts");
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
@@ -18,8 +18,8 @@ const { register } = require("module");
 require("dotenv").config();
 const aboutRoutes = require('./server/routes/aboutRoutes.js');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -34,7 +34,7 @@ app.use(
   })
 );
 app.use(flash());
-app.use(fileUpload());
+// app.use(fileUpload());
 app.set("layout", "layout/main"); // Set the layout file (without the .ejs extension)
 app.set("view engine", "ejs"); // Set EJS as the view engine
 // Set the views directory to './views'

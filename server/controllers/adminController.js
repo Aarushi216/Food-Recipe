@@ -34,10 +34,11 @@ const adminDashboard = async (req, res) => {
 };
 
 const approveRecipe = async (req, res) => {
-  console.log("ok")
+  console.log("ok"); // Log a message to indicate the function is being executed
   const { recipeId } = req.params;
 
   try {
+    // Attempt to find the recipe by its ID
     const recipe = await Recipe.findById(recipeId);
 
     // Check if the recipe is found
@@ -49,22 +50,21 @@ const approveRecipe = async (req, res) => {
     // Check if the recipe is not already approved
     if (recipe.approvalStatus !== "approved") {
       // Set the approvalStatus to "approved"
-      
-    if (!recipe) {
-      return res.status(404).send({ message: "Recipe not found" });
-    }
-
-    recipe.approvalStatus = "approved";
+      recipe.approvalStatus = "approved";
 
       // Save the updated recipe
       await recipe.save();
+    }
 
     // Redirect back to the recipe list or a specific page
-    res.redirect("/views/recipe.ejs");
+    return res.redirect("/admin/dashboard");
   } catch (error) {
+    // Handle errors during the approval process
+    console.error('Error approving recipe:', error);
     res.status(500).send({ message: error.message || "Error Occurred" });
   }
 };
+
 
 
 
@@ -72,6 +72,7 @@ const rejectRecipe = async (req, res) => {
   const { recipeId } = req.params;
 
   try {
+    // Attempt to find the recipe by its ID
     const recipe = await Recipe.findById(recipeId);
 
     // Check if the recipe is found
@@ -87,10 +88,12 @@ const rejectRecipe = async (req, res) => {
 
       // Save the updated recipe
       await recipe.save();
+    }
 
     // Redirect back to the recipe list or a specific page
-    res.redirect("/views/recipe.ejs");
+    return res.redirect("/admin/dashboard");
   } catch (error) {
+    // Handle errors during the rejection process
     console.error('Error rejecting recipe:', error);
     req.flash('error', 'An error occurred while rejecting the recipe.');
     res.redirect("/admin/dashboard");
@@ -106,4 +109,4 @@ module.exports = {
   adminDashboard,
   approveRecipe,
   rejectRecipe
-};
+}

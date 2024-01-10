@@ -5,6 +5,7 @@ const User = require("../models/User");
 const Recipe = require("../models/Recipe");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const randomstring=require("randomstring");
 
 const securePassword = async (password) => {
   try {
@@ -45,6 +46,40 @@ const sendVerifyMail = async (name, email, user_id) => {
     res.status(500).send({ message: error.message || "Error Occured" });
   }
 };
+
+
+//for reset password send mail
+const sendResetPasswordMail = async (name, email, token) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: "aarushikhanal.076@kathford.edu.np",
+        pass: "boik pyhp icjr nnxt",
+      },
+    });
+    const mailOptions = {
+      from: "aarushikhanal.076@kathford.edu.np",
+      to: email,
+      subject: "For Reset Password",
+      html: `<p> Hi ${name},Please click here to <a href="http://127.0.0.1:3000/forget-password?token=${token}">Reset</a>Your password.</p>`,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email has been sent:-", info.response);
+      }
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message || "Error Occured" });
+  }
+};
+
+
 const loadRegister = async (req, res) => {
   try {
     res.render("users/register", { layout: 'layout/layout-no-header' });
@@ -178,7 +213,92 @@ const loadUserDashboard = async (req, res) => {
     res.status(500).send({ message: 'Error occurred while loading user dashboard' });
   }
 };
+//forget password code start
 
+const forgetLoad=async(req,res)=>{
+  try{
+    res.render('users/forget');
+  }catch(error){
+    console.log(error.message)
+  }
+};
+
+const forgetVerify=async(req,res)=>{
+  try{
+    const email=req.body.email;
+   const userData=await User.findOne({email:email});
+   if(userData){
+   
+    if(userData.is_varified ===0){
+      res.render('users/forget',{message:"please verify your mail"});
+    }else{
+      const randomString=randomstring.generate();
+     const updatedData=await User.updateOne({email:email},{$set:{token:randomString}});
+     sendResetPasswordMail(userData.name,userData.email,randomString);
+     res.render('users/forget',{message:"Pleasecheck your mail to reset your password"});
+    }
+   }else{
+    res.render('users/forget',{message:"User email is incorrect"});
+   }
+  }catch(error){
+    console.log(error.message);
+  }
+};
+const forgetPasswordLoad=async(req,res)=>{
+  try{
+    const token = req.query.token;
+    const tokenData=await User.findOne({token:token})
+    if(tokenData){
+      res.render('users/forget-password',{user_id:tokenData._id});
+    }else{
+      res.render('users/404',{message:"Tokenis invalid"});
+    }
+  }catch(error){
+    console.log(error.message);
+  }
+};
+const resetPassword=async(req,res)=>{
+  try{
+    const password=req.body.password;
+    const user_id=req.body.user_id;
+
+    const secure_password=await securePassword(password);
+   const updatedData=await User.findByIdAndUpdate({_id:user_id},{$set:{password:secure_password,token:''}})
+   res.redirect("/login");
+  }catch(error){
+    console.log(error.message)
+  }
+};
+
+//user profile update
+
+const editLoad=async(req,res)=>{
+  try{
+    const id = req.query.id;
+  const userData=await  User.findById({_id:id});
+  if(userData){
+    res.render("users/edit",{user:userData});
+  }else{
+    res.redirect("/");
+  }
+  }catch(error){
+    console.log(error.message)
+  }
+};
+
+const updateProfile=async(req,res)=>{
+  try{
+    if(req.file){
+      const userData=await User.findByIdAndUpdate({_id:req.body.user_id},{$set:{name:req.body.name,email:req.body.email,mobile:req.body.mno,image:req.file.filename}})
+
+    }else{
+     const userData=await User.findByIdAndUpdate({_id:req.body.user_id},{$set:{name:req.body.name,email:req.body.email,mobile:req.body.mno}})
+    }
+    res.redirect('/')
+  }catch(error){
+    console.log(error.message)
+  }
+}
 
 module.exports = {
   loadRegister,
@@ -189,6 +309,11 @@ module.exports = {
   verifyLogin,
   loadHome,
   userLogout,
-  loadUserDashboard
- 
+  loadUserDashboard,
+  forgetLoad,
+  forgetVerify,
+  forgetPasswordLoad,
+  resetPassword,
+  editLoad,
+  updateProfile
 };

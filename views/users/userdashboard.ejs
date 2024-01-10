@@ -31,12 +31,13 @@
     </tr>
     <!-- Add more details as needed -->
   </table>
+  <a href ="/edit?id=<%=user._id %>">Edit</a>
   <hr>
   <br>
   <!-- Display recipes if approved -->
-  <% if (recipes.length > 0) { %>
+  <!-- <% if (recipes.length > 0) { %>
     <h2>Your Approved Recipes</h2>
-    <ul>
+    <ul> -->
       <% recipes.forEach(recipe => { %>
         <!-- Render each approved recipe as needed -->
         <li><%= recipe.name %></li>
